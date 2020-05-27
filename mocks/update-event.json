@@ -1,11 +1,11 @@
 {
-  "body": "{\"content\":\"new 2323 world\",\"attachment\":\"new3.jpg\"}",
+  "body": "{\"title\":\"new title1\",\"description\":\"new desc1\",\"category\":[6,6,6]}",
   "pathParameters": {
-    "id": "3878c0f0-9b9d-11ea-a1d2-397ab7001648"
+    "id": "0b9edb60-9fa2-11ea-826c-671fd0163c3c"
   },
   "requestContext": {
     "identity": {
-      "cognitoIdentityId": "USER-SUB-1234"
+      "cognitoIdentityId": "0"
     }
   }
 }

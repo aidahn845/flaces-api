@@ -9,15 +9,16 @@ export const main = handler(async (event, context) => {
     // - 'userId': Identity Pool identity id of the authenticated user
     // - 'noteId': path parameter
     Key: {
-      userId: event.requestContext.identity.cognitoIdentityId,
-      noteId: event.pathParameters.id
+      projectId: event.pathParameters.id,
+      userId: event.requestContext.identity.cognitoIdentityId
     },
     // 'UpdateExpression' defines the attributes to be updated
     // 'ExpressionAttributeValues' defines the value in the update expression
-    UpdateExpression: "SET content = :content, attachment = :attachment",
+    UpdateExpression: "SET title = :title, description = :description, category = :category",
     ExpressionAttributeValues: {
-      ":attachment": data.attachment || null,
-      ":content": data.content || null
+      ":title": data.title || null,
+      ":description": data.description || null,
+      ":category": data.category || null
     },
     // 'ReturnValues' specifies if and how to return the item's attributes,
     // where ALL_NEW returns all attributes of the item after the update; you
@@ -25,7 +26,9 @@ export const main = handler(async (event, context) => {
     ReturnValues: "ALL_NEW"
   };
 
-  await dynamoDb.update(params);
+  const result = await dynamoDb.update(params);
+
+  //console.log(result);
 
   return { status: true };
 });
