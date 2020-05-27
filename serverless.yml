@@ -114,8 +114,6 @@ functions:
 
   createUser:
     handler: createUser.main
-    # memorySize: 128
-    # timeout: 20
     events:
       - http:
           path: users

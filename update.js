@@ -26,9 +26,7 @@ export const main = handler(async (event, context) => {
     ReturnValues: "ALL_NEW"
   };
 
-  const result = await dynamoDb.update(params);
-
-  //console.log(result);
+  await dynamoDb.update(params);
 
   return { status: true };
 });
