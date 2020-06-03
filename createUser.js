@@ -1,33 +1,40 @@
-import * as uuid from "uuid";
-import handler from "./libs/handler-lib";
+//import * as uuid from "uuid";
+//import handler from "./libs/handler-lib";
 import dynamoDb from "./libs/dynamodb-lib";
 
-export const main = handler(async (event, context) => {
-  const data = JSON.parse(event.body);
-  const params = {
-    TableName: process.env.userTableName,
-    // 'Item' contains the attributes of the item to be created
-    // - 'userId': user identities are federated through the
-    //             Cognito Identity Pool, we will use the identity id
-    //             as the user id of the authenticated user
-    // - 'noteId': a unique uuid
-    // - 'content': parsed from request body
-    // - 'attachment': parsed from request body
-    // - 'createdAt': current Unix timestamp
-    Item: {
-      userId: uuid.v1(),
-      lastName: data.lastName,
-      firstName: data.firstName,
-      email: data.email,
-      phone: "111-222-3333",
-      title: data.title,
-      organization: "USF",
-      image: "",
-      createdAt: Date.now()
+export const main = async (event, context) => {
+  console.log(event);
+
+  if (event.request.userAttributes.sub) {
+
+    const params = {
+      TableName: process.env.userTableName,
+      Item: {
+        userId: event.request.userAttributes.sub,
+        userName: event.userName,
+        lastName: event.request.userAttributes["custom:lastname"],
+        firstName: event.request.userAttributes["custom:firstname"],
+        email: event.request.userAttributes.email,
+        //phone: "111-222-3333",
+        //title: data.title,
+        //organization: "USF",
+        role: "user",
+        createdAt: Date.now()
+      }
+    };
+
+    try {
+      await dynamoDb.put(params);
+      console.log("Success");
+    } catch (err) {
+      console.log("Error", err);
     }
-  };
 
-  await dynamoDb.put(params);
+    console.log("Success: Everything executed correctly");
+    context.done(null, event);
 
-  return params.Item;
-});
+  } else {
+    console.log("Error: Nothing was written to DDB or SQS");
+    context.done(null, event);
+  }
+};

@@ -84,7 +84,7 @@ Resources:
                     - ''
                     -
                       - Fn::GetAtt: [AttachmentsBucket, Arn]
-                      - '/uploads/'
+                      - '/public/'
 
   # IAM role used for authenticated users
   CognitoAuthRole:

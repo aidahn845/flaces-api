@@ -16,6 +16,7 @@ custom:
   # Set the table name here so we can use it while testing locally
   #tableName: ${self:custom.stage}-acesprojects
   tableName: aces-projects
+  userIndexName: userId-index
   userTableName: aces-users
 
 provider:
@@ -28,6 +29,7 @@ provider:
   # under process.env.
   environment:
     tableName: ${self:custom.tableName}
+    userIndexName: ${self:custom.userIndexName}
     userTableName: ${self:custom.userTableName}
 
   # 'iamRoleStatements' defines the permission policy for the Lambda function.
@@ -56,7 +58,7 @@ functions:
   create:
     handler: create.main
     # memorySize: 128
-    # timeout: 20
+    timeout: 30
     events:
       - http:
           path: projects
@@ -88,11 +90,21 @@ functions:
           cors: true
           authorizer: aws_iam
 
+  listall:
+    handler: listall.main
+    events:
+      - http:
+          path: projects/all
+          method: get
+          cors: true
+          authorizer: aws_iam
+
   update:
     # Defines an HTTP API endpoint that calls the main function in update.js
     # - path: url path is /projects/{id}
     # - method: PUT request
     handler: update.main
+    timeout: 30
     events:
       - http:
           path: projects/{id}
@@ -118,6 +130,15 @@ functions:
       - http:
           path: users
           method: post
+          cors: true
+          authorizer: aws_iam
+  
+  getUser:
+    handler: getUser.main
+    events:
+      - http:
+          path: users/{id}
+          method: get
           cors: true
           authorizer: aws_iam
 

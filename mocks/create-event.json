@@ -2,7 +2,7 @@
   "body": "{\"title\":\"project 1\",\"description\":\"222\",\"status\":\"0\",\"image\":\"hello.jpg\"}",
   "requestContext": {
     "identity": {
-      "cognitoIdentityId": "USER-SUB-1234"
+      "cognitoIdentityId": "cognito-identity1"
     }
   }
 }

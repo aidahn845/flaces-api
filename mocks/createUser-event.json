@@ -1,8 +1,13 @@
 {
-  "body": "{\"title\":\"Engineer\",\"firstName\":\"tony\",\"lastName\":\"lee\",\"email\":\"tony@gmail.com\"}",
-  "requestContext": {
-    "identity": {
-      "cognitoIdentityId": "USER-SUB-1234"
+  "userName": "222johnnysmith",
+  "request": {
+    "userAttributes": {
+      "email": "1exampleuser@example.com",
+      "email_verified": true,
+      "custom:firstname": "1Johnny",
+      "custom:lastname": "1Smith",
+      "sub": "abcdevfefe-1232132-cofeve"
     }
-  }
+  },
+  "response": {}
 }

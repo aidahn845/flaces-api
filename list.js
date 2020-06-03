@@ -1,25 +1,22 @@
 import handler from "./libs/handler-lib";
 import dynamoDb from "./libs/dynamodb-lib";
 
+// get all projects created by userId
 export const main = handler(async (event, context) => {
   const params = {
     TableName: process.env.tableName,
-    // 'KeyConditionExpression' defines the condition for the query
-    // - 'userId = :userId': only return items with matching 'userId'
-    //   partition key
-    // 'ExpressionAttributeValues' defines the value in the condition
-    // - ':userId': defines 'userId' to be Identity Pool identity id
-    //   of the authenticated user
+    IndexName : process.env.userIndexName,
 
-    //ProjectionExpression: "title, description",
-    FilterExpression: "active = :active",
+    KeyConditionExpression: "#userId = :v_userId",
+    ExpressionAttributeNames:{
+        "#userId": "userId"
+    },
     ExpressionAttributeValues: {
-         ":active": true
+        ":v_userId": event.requestContext.identity.cognitoIdentityId
     }
   };
 
-  const result = await dynamoDb.scan(params);
+  const result = await dynamoDb.query(params);
 
-  // Return the matching list of items in response body
   return result.Items;
 });
