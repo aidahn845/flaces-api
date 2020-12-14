@@ -1,6 +1,8 @@
 import handler from "./libs/handler-lib";
 import dynamoDb from "./libs/dynamodb-lib";
 
+// TODO: check if user is admin (all projects) or not (user projects)
+
 // get all projects created by userId
 export const main = handler(async (event, context) => {
   const params = {

@@ -12,6 +12,11 @@ export const main = handler(async (event, context) => {
     names["#title"] = "title";
     vals[":v_title"] = data.title;
   }
+  if (data.shortTitle) {
+    arr.push("#shortTitle = :v_shortTitle");
+    names["#shortTitle"] = "shortTitle";
+    vals[":v_shortTitle"] = data.shortTitle;
+  }
   if (data.description) {
     arr.push("#description = :v_description");
     names["#description"] = "description";
@@ -20,7 +25,7 @@ export const main = handler(async (event, context) => {
   if (data.status) {
     arr.push("#status = :v_status");
     names["#status"] = "status";
-    vals[":v_status"] = data.status;
+    vals[":v_status"] = parseInt(data.status);
   }
   if (data.category) {
     arr.push("#category = :v_category");
@@ -77,6 +82,10 @@ export const main = handler(async (event, context) => {
     names["#district"] = "district";
     vals[":v_district"] = data.district;
   }
+  arr.push("#statewide = :v_statewide");
+  names["#statewide"] = "statewide";
+  vals[":v_statewide"] = data.statewide === true;
+
 
   if (arr.length > 0) {
     const exp = "SET " + arr.join(", ");

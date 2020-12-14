@@ -10,10 +10,11 @@ export const main = handler(async (event, context) => {
     Item: {
       projectId: uuid.v1(),
       userId: event.requestContext.identity.cognitoIdentityId,
-      active: true,
+      active: false,
       title: data.title,
+      shortTitle: data.shortTitle,
       description: data.description,
-      status: data.status,
+      status: parseInt(data.status),
       category: data.category,
       mode: data.mode,
       district: data.district,
@@ -25,7 +26,8 @@ export const main = handler(async (event, context) => {
       geom: data.geom,
       dataFiles: data.dataFiles,
       imageFiles: data.imageFiles,
-      createdAt: Date.now()
+      createdAt: Date.now(),
+      statewide: data.statewide
     }
   };
 
