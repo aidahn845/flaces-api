@@ -86,6 +86,9 @@ export const main = handler(async (event, context) => {
   names["#statewide"] = "statewide";
   vals[":v_statewide"] = data.statewide === true;
 
+  arr.push("#updatedAt = :v_updatedAt");
+  names["#updatedAt"] = "updatedAt";
+  vals[":v_updatedAt"] = Date.now();
 
   if (arr.length > 0) {
     const exp = "SET " + arr.join(", ");
