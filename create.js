@@ -27,7 +27,6 @@ export const main = handler(async (event, context) => {
       dataFiles: data.dataFiles,
       imageFiles: data.imageFiles,
       createdAt: Date.now(),
-      updatedAt: Date.now(),
       statewide: data.statewide
     }
   };
