@@ -1,0 +1,12 @@
+Resources:
+  # allow cognito user pool to create user upon signup confirmation
+  UserPoolLambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      Principal: cognito-idp.amazonaws.com
+      FunctionName: 
+        Fn::GetAtt: [CreateUserLambdaFunction, Arn]
+      SourceArn: 
+        Fn::GetAtt: [CognitoUserPool, Arn]
+      #SourceArn: arn:aws:cognito-idp:us-east-2:016498552929:userpool/us-east-2_FFpJCTVpa

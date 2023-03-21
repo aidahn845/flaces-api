@@ -1,13 +1,9 @@
 Resources:
-  # The federated identity for our user pool to auth with
   CognitoIdentityPool:
     Type: AWS::Cognito::IdentityPool
     Properties:
-      # Generate a name based on the stage
-      IdentityPoolName: ${self:custom.stage}IdentityPool
-      # Don't allow unathenticated users
+      IdentityPoolName: ${self:custom.stage}-${self:custom.appName}-identity-pool
       AllowUnauthenticatedIdentities: true
-      # Link to our User Pool
       CognitoIdentityProviders:
         - ClientId:
             Ref: CognitoUserPoolClient
@@ -58,12 +54,11 @@ Resources:
                   - 'cognito-identity:*'
                 Resource: '*'
               
-              # Allow users to invoke our API
               - Effect: 'Allow'
                 Action:
                   - 'execute-api:Invoke'
                 Resource:
-                  Fn::Join:
+                  - Fn::Join:
                     - ''
                     -
                       - 'arn:aws:execute-api:'
@@ -72,19 +67,17 @@ Resources:
                       - Ref: AWS::AccountId
                       - ':'
                       - Ref: ApiGatewayRestApi
-                      - '/*'
+                      - '/*/GET/projects/*'
               
-              # Allow users to upload attachments to their
-              # folder inside our S3 bucket
               - Effect: 'Allow'
                 Action:
-                  - 's3:*'
+                  - 's3:GetObject'
                 Resource:
                   - Fn::Join:
                     - ''
                     -
-                      - Fn::GetAtt: [AttachmentsBucket, Arn]
-                      - '/public/'
+                      - Fn::GetAtt: [UploadsBucket, Arn]
+                      - '/public/*'
 
   # IAM role used for authenticated users
   CognitoAuthRole:
@@ -117,12 +110,11 @@ Resources:
                   - 'cognito-identity:*'
                 Resource: '*'
               
-              # Allow users to invoke our API
               - Effect: 'Allow'
                 Action:
                   - 'execute-api:Invoke'
                 Resource:
-                  Fn::Join:
+                  - Fn::Join:
                     - ''
                     -
                       - 'arn:aws:execute-api:'
@@ -133,21 +125,18 @@ Resources:
                       - Ref: ApiGatewayRestApi
                       - '/*'
               
-              # Allow users to upload attachments to their
-              # folder inside our S3 bucket
               - Effect: 'Allow'
                 Action:
-                  - 's3:*'
+                  - 's3:GetObject'
+                  - 's3:PutObject'
+                  - 's3:DeleteObject'
                 Resource:
                   - Fn::Join:
                     - ''
                     -
-                      - Fn::GetAtt: [AttachmentsBucket, Arn]
-                      - '/private/'
-                      - '$'
-                      - '{cognito-identity.amazonaws.com:sub}/*'
+                      - Fn::GetAtt: [UploadsBucket, Arn]
+                      - '/public/*'
   
-# Print out the Id of the Identity Pool that is created
 Outputs:
   IdentityPoolId:
     Value:

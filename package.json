@@ -1,22 +1,20 @@
 {
   "name": "flaces-api",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "main": "handler.js",
   "scripts": {
     "test": "serverless-bundle test"
   },
-  "author": "",
-  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AnomalyInnovations/serverless-nodejs-starter.git"
+    "url": "https://github.com/aidahn845/flaces-api.git"
   },
   "devDependencies": {
-    "aws-sdk": "^2.684.0",
-    "serverless-bundle": "^1.2.5",
-    "serverless-dotenv-plugin": "^2.1.1",
-    "serverless-offline": "^5.3.3"
+    "aws-sdk": "^2.1016.0",
+    "serverless-bundle": "^1.9.1",
+    "serverless-dotenv-plugin": "^2.4.2",
+    "serverless-offline": "^5.12.1"
   },
   "dependencies": {
     "es6-promise": "^4.2.8",

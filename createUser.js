@@ -11,14 +11,9 @@ export const main = async (event, context) => {
       TableName: process.env.userTableName,
       Item: {
         userId: event.request.userAttributes.sub,
-        userName: event.userName,
         lastName: event.request.userAttributes["custom:lastname"],
         firstName: event.request.userAttributes["custom:firstname"],
         email: event.request.userAttributes.email,
-        //phone: "111-222-3333",
-        //title: data.title,
-        //organization: "USF",
-        role: "user",
         createdAt: Date.now()
       }
     };

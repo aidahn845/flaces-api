@@ -4,6 +4,7 @@ import dynamoDb from "./libs/dynamodb-lib";
 
 export const main = handler(async (event, context) => {
   const data = JSON.parse(event.body);
+  
   const params = {
     TableName: process.env.tableName,
 
@@ -30,8 +31,6 @@ export const main = handler(async (event, context) => {
       statewide: data.statewide
     }
   };
-
-  // add project members: projectId, userId, name?, email?, role
 
   await dynamoDb.put(params);
 

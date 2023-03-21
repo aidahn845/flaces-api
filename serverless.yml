@@ -1,6 +1,5 @@
 service: flaces-api
 
-# Create an optimized package for our functions
 package:
   individually: true
 
@@ -13,16 +12,15 @@ custom:
   # Our stage is based on what is passed in when running serverless
   # commands. Or fallsback to what we have set in the provider section.
   stage: ${opt:stage, self:provider.stage}
-  # Set the table name here so we can use it while testing locally
-  #tableName: ${self:custom.stage}-acesprojects
-  tableName: aces-projects
+  appName: flaces
+  tableName: ${self:custom.stage}-${self:custom.appName}-projects
   userIndexName: userId-index
-  userTableName: aces-users
+  userTableName: ${self:custom.stage}-${self:custom.appName}-users
 
 provider:
   name: aws
-  runtime: nodejs12.x
-  stage: dev
+  runtime: nodejs14.x
+  stage: prod
   region: us-east-2
 
   # These environment variables are made available to our functions
@@ -43,14 +41,18 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      # Restrict our IAM role permissions to
-      # the specific table for the stage
-      Resource: "arn:aws:dynamodb:us-east-2:*:*"
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:*"
     - Effect: Allow
       Action:
         - s3:GetObject
         - s3:PutObject
-      Resource: "arn:aws:s3:::aces-uploads/*"
+        - s3:DeleteObject
+      Resource:
+        - Fn::Join:
+          - ''
+          -
+            - Fn::GetAtt: [UploadsBucket, Arn]
+            - '/public/'
 
 functions:
   # Defines an HTTP API endpoint that calls the main function in create.js
@@ -146,15 +148,25 @@ functions:
           cors: true
           authorizer: aws_iam
 
-  aggregateBikeData:
-    handler: aggregateBikeData.main
-    timeout: 30
-    events:
-      - schedule:
-          rate: rate(120 minutes)
-          enabled: false
+  # aggregateBikeData:
+  #   handler: aggregateBikeData.main
+  #   timeout: 30
+  #   events:
+  #     - schedule:
+  #         rate: rate(120 minutes)
+  #         enabled: false
 
 # Create our resources with separate CloudFormation templates
 resources:
   # API Gateway Errors
   - ${file(resources/api-gateway-errors.yml)}
+  # DynamoDB
+  - ${file(resources/dynamodb-table.yml)}
+  # S3
+  - ${file(resources/s3-bucket.yml)}
+  # Cognito
+  - ${file(resources/cognito-user-pool.yml)}
+  - ${file(resources/cognito-identity-pool.yml)}
+  # Permissions
+  - ${file(resources/permissions.yml)}
+

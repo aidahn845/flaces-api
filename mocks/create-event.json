@@ -1,8 +1,8 @@
 {
-  "body": "{\"title\":\"project 1\",\"description\":\"222\",\"status\":\"0\",\"image\":\"hello.jpg\"}",
+  "body": "{\"title\":\"project 879\",\"description\":\"--fasdfadsf--\",\"status\":\"1\",\"image\":\"again.jpg\"}",
   "requestContext": {
     "identity": {
-      "cognitoIdentityId": "cognito-identity1"
+      "cognitoIdentityId": "cognito-identity1345"
     }
   }
 }

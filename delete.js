@@ -7,7 +7,6 @@ export const main = handler(async (event, context) => {
 
     Key: {
       projectId: event.pathParameters.id,
-      //userId: event.requestContext.identity.cognitoIdentityId
     }
   };
 

@@ -1,8 +1,7 @@
 Resources:
-  AttachmentsBucket:
+  UploadsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      # Set the CORS policy
       CorsConfiguration:
         CorsRules:
           -
@@ -17,9 +16,13 @@ Resources:
               - DELETE
               - HEAD
             MaxAge: 3000
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
 
-# Print out the name of the bucket that is created
 Outputs:
-  AttachmentsBucketName:
+  UploadsBucketName:
     Value:
-      Ref: AttachmentsBucket
+      Ref: UploadsBucket
